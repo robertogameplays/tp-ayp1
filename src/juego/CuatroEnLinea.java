@@ -1,7 +1,7 @@
 package juego;
 
 /**
- * Juego Cuatro en Lí­nea
+ * Juego Cuatro en Lï¿½nea
  * 
  * Reglas:
  * 
@@ -10,12 +10,16 @@ package juego;
  */
 public class CuatroEnLinea {
 
+    private int filas, columnas;
+    private String jugadorRojo, jugadorAmarillo, jugadorActivo;
+    private Casillero[][] casilleros;
+
 	/**
 	 * pre : 'filas' y 'columnas' son mayores o iguales a 4.
 	 * post: empieza el juego entre el jugador que tiene fichas rojas, identificado como 
 	 * 		 'jugadorRojo' y el jugador que tiene fichas amarillas, identificado como
 	 * 		 'jugadorAmarillo'. 
-	 * 		 Todo el tablero está vacío.
+	 * 		 Todo el tablero estï¿½ vacï¿½o.
 	 * 
 	 * @param filas : cantidad de filas que tiene el tablero.
 	 * @param columnas : cantidad de columnas que tiene el tablero.
@@ -23,52 +27,70 @@ public class CuatroEnLinea {
 	 * @param jugadorAmarillo : nombre del jugador con fichas amarillas.
 	 */
 	public CuatroEnLinea(int filas, int columnas, String jugadorRojo, String jugadorAmarillo) {
-
+        if(this.validarNumeros(filas) && this.validarNumeros(columnas)) {
+			this.crearTablero(filas, columnas);
+            this.filas = filas;
+            this.columnas = columnas;
+            this.jugadorRojo = jugadorRojo;
+            this.jugadorAmarillo = jugadorAmarillo;
+            this.jugadorActivo = this.jugadorRojo;
+        }else {
+            Error err = new Error("Los numeros deben ser mayor o igual a 4");
+            throw err;
+        }
 	}
 
 	/**
-	 * post: devuelve la cantidad máxima de fichas que se pueden apilar en el tablero.
+	 * post: devuelve la cantidad mï¿½xima de fichas que se pueden apilar en el tablero.
 	 */
 	public int contarFilas() {
-		
-		return 4;
+		return this.filas;
 	}
 
 	/**
-	 * post: devuelve la cantidad máxima de fichas que se pueden alinear en el tablero.
+	 * post: devuelve la cantidad mï¿½xima de fichas que se pueden alinear en el tablero.
 	 */
 	public int contarColumnas() {
-		
-		return 4;
+		return this.columnas;
 	}
 
 	/**
-	 * pre : fila está en el intervalo [1, contarFilas()],
-	 * 		 columnas está en el intervalo [1, contarColumnas()].
-	 * post: indica qué ocupa el casillero en la posición dada por fila y columna.
+	 * pre : fila estï¿½ en el intervalo [1, contarFilas()],
+	 * 		 columnas estï¿½ en el intervalo [1, contarColumnas()].
+	 * post: indica quï¿½ ocupa el casillero en la posiciï¿½n dada por fila y columna.
 	 * 
 	 * @param fila
 	 * @param columna
 	 */
 	public Casillero obtenerCasillero(int fila, int columna) {
-		
-		return Casillero.VACIO;
+		return casilleros[fila-1][columna-1];
 	}
 	
 	/**
-	 * pre : el juego no terminó, columna está en el intervalo [1, contarColumnas()]
-	 * 		 y aún queda un Casillero.VACIO en la columna indicada. 
+	 * pre : el juego no terminï¿½, columna estï¿½ en el intervalo [1, contarColumnas()]
+	 * 		 y aï¿½n queda un Casillero.VACIO en la columna indicada. 
 	 * post: deja caer una ficha en la columna indicada.
 	 * 
 	 * @param columna
 	 */
 	public void soltarFicha(int columna) {
-		
+		if(1 <= columna && columna <= this.contarColumnas()) {
+			int i = this.filas - 1;
+			while (i >= 0) {
+				if (this.casilleros[i][columna - 1] == Casillero.VACIO) {
+					this.casilleros[i][columna - 1] = this.checkJugadorActivo();
+					break;
+				}
+				i--;
+			}
+		}else {
+			throw new Error("El parametro culumna debe encontrarse en el rango [1, " + this.contarColumnas() +"]");
+		}
 	}
 	
 	/**
-	 * post: indica si el juego terminó porque uno de los jugadores
-	 * 		 ganó o no existen casilleros vacíos.
+	 * post: indica si el juego terminï¿½ porque uno de los jugadores
+	 * 		 ganï¿½ o no existen casilleros vacï¿½os.
 	 */
 	public boolean termino() {
 		
@@ -76,7 +98,7 @@ public class CuatroEnLinea {
 	}
 
 	/**
-	 * post: indica si el juego terminó y tiene un ganador.
+	 * post: indica si el juego terminï¿½ y tiene un ganador.
 	 */
 	public boolean hayGanador() {
 		
@@ -84,11 +106,51 @@ public class CuatroEnLinea {
 	}
 
 	/**
-	 * pre : el juego terminó.
-	 * post: devuelve el nombre del jugador que ganó el juego.
+	 * pre : el juego terminï¿½.
+	 * post: devuelve el nombre del jugador que ganï¿½ el juego.
 	 */
 	public String obtenerGanador() {
 		
 		return null;
+	}
+
+    /**
+     * post: devuelve verdadero o falso segun el valor
+     * @param numero
+     * @return
+     */
+	private boolean validarNumeros(int numero) {
+	    if((numero >= 4) && (numero<=10)){
+	        return true;
+        }else {
+	        return false;
+        }
+    }
+
+	/**
+	 * post: funcion que crear array vacio
+	 */
+	private void crearTablero(int filas, int columnas) {
+		this.casilleros = new Casillero[filas][columnas];
+
+		for(int i = 0; i < filas; i++) {
+			for(int j = 0; j < columnas; j++) {
+				this.casilleros[i][j] = Casillero.VACIO;
+			}
+		}
+	}
+
+	/**
+	 * post: funcion que retorna el jugador activo y cambia el jugador
+	 * @return
+	 */
+	private Casillero checkJugadorActivo() {
+		if(this.jugadorActivo.equals(this.jugadorRojo)) {
+			this.jugadorActivo = this.jugadorAmarillo;
+			return Casillero.ROJO;
+		}else {
+			this.jugadorActivo = this.jugadorRojo;
+			return Casillero.AMARILLO;
+		}
 	}
 }
