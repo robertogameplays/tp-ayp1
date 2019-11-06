@@ -1,5 +1,7 @@
 package juego;
 
+import javafx.scene.control.Alert;
+
 /**
  * Juego Cuatro en L�nea
  * 
@@ -15,6 +17,7 @@ public class CuatroEnLinea {
     private Casillero[][] casilleros;
     private Casillero colorActivo;
     private boolean hayGanador;
+    private int contadorVacios;
 
 	/**
 	 * pre : 'filas' y 'columnas' son mayores o iguales a 4.
@@ -38,9 +41,9 @@ public class CuatroEnLinea {
             this.jugadorActivo = this.jugadorRojo;
             this.colorActivo = Casillero.ROJO;
             this.hayGanador = false;
+            this.contadorVacios = filas * columnas;
         }else {
-            Error err = new Error("Los numeros deben ser mayor o igual a 4");
-            throw err;
+			this.alertTablero("Los numeros deben ser mayor o igual a 4");
         }
 	}
 
@@ -85,13 +88,14 @@ public class CuatroEnLinea {
 					this.colorActivo = this.checkJugadorActivo();
 					this.casilleros[i][columna - 1] = this.colorActivo;
 					this.ganadorLineaHorizontal(i, columna - 1);
+					this.contadorVacios--;
 					break;
 				}
 				i--;
 			}
 			this.cambiarTurno();
 		}else {
-			throw new Error("El parametro culumna debe encontrarse en el rango [1, " + this.contarColumnas() +"]");
+			this.alertTablero("El parametro culumna debe encontrarse en el rango [1, " + this.contarColumnas() +"]");
 		}
 	}
 	
@@ -100,7 +104,7 @@ public class CuatroEnLinea {
 	 * 		 gan� o no existen casilleros vac�os.
 	 */
 	public boolean termino() {
-		return this.hayGanador;
+		return (this.hayGanador || this.contadorVacios == 0);
 	}
 
 	/**
@@ -194,5 +198,18 @@ public class CuatroEnLinea {
 		}else {
 			this.jugadorActivo = this.jugadorRojo;
 		}
+	}
+
+	/**
+	 * post: funcion que muestra un mensaje
+	 * @param msg
+	 */
+	private void alertTablero(String msg) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Alerta del tablero");
+		alert.setHeaderText(null);
+		alert.setContentText(msg);
+
+		alert.showAndWait();
 	}
 }
