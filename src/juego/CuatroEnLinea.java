@@ -13,6 +13,8 @@ public class CuatroEnLinea {
     private int filas, columnas;
     private String jugadorRojo, jugadorAmarillo, jugadorActivo;
     private Casillero[][] casilleros;
+    private Casillero colorActivo;
+    private boolean hayGanador;
 
 	/**
 	 * pre : 'filas' y 'columnas' son mayores o iguales a 4.
@@ -34,6 +36,8 @@ public class CuatroEnLinea {
             this.jugadorRojo = jugadorRojo;
             this.jugadorAmarillo = jugadorAmarillo;
             this.jugadorActivo = this.jugadorRojo;
+            this.colorActivo = Casillero.ROJO;
+            this.hayGanador = false;
         }else {
             Error err = new Error("Los numeros deben ser mayor o igual a 4");
             throw err;
@@ -78,11 +82,14 @@ public class CuatroEnLinea {
 			int i = this.filas - 1;
 			while (i >= 0) {
 				if (this.casilleros[i][columna - 1] == Casillero.VACIO) {
-					this.casilleros[i][columna - 1] = this.checkJugadorActivo();
+					this.colorActivo = this.checkJugadorActivo();
+					this.casilleros[i][columna - 1] = this.colorActivo;
+					this.ganadorLineaHorizontal(i, columna - 1);
 					break;
 				}
 				i--;
 			}
+			this.cambiarTurno();
 		}else {
 			throw new Error("El parametro culumna debe encontrarse en el rango [1, " + this.contarColumnas() +"]");
 		}
@@ -93,16 +100,14 @@ public class CuatroEnLinea {
 	 * 		 gan� o no existen casilleros vac�os.
 	 */
 	public boolean termino() {
-		
-		return false;
+		return this.hayGanador;
 	}
 
 	/**
 	 * post: indica si el juego termin� y tiene un ganador.
 	 */
 	public boolean hayGanador() {
-		
-		return false;
+		return this.hayGanador;
 	}
 
 	/**
@@ -110,8 +115,7 @@ public class CuatroEnLinea {
 	 * post: devuelve el nombre del jugador que gan� el juego.
 	 */
 	public String obtenerGanador() {
-		
-		return null;
+		return this.jugadorActivo;
 	}
 
     /**
@@ -146,11 +150,49 @@ public class CuatroEnLinea {
 	 */
 	private Casillero checkJugadorActivo() {
 		if(this.jugadorActivo.equals(this.jugadorRojo)) {
-			this.jugadorActivo = this.jugadorAmarillo;
 			return Casillero.ROJO;
 		}else {
-			this.jugadorActivo = this.jugadorRojo;
 			return Casillero.AMARILLO;
+		}
+	}
+
+	/**
+	 * post: funcion que retorna si gano un jugador por fila
+	 * @param filaActual
+	 * @param columnaActual
+	 */
+	public void ganadorLineaHorizontal(int filaActual, int columnaActual) {
+		int countColor = 0;
+
+		for(int i = columnaActual; i < this.columnas; i++) {
+			if(this.casilleros[filaActual][i].equals(this.colorActivo)) {
+				countColor++;
+			}
+		}
+		if(countColor >= 4) {
+			this.hayGanador = true;
+		}else {
+			for(int i = 0; i < columnaActual; i++) {
+				if(this.casilleros[filaActual][i].equals(this.colorActivo)) {
+					countColor++;
+				}
+			}
+		}
+		if(countColor >= 4) {
+			this.hayGanador =  true;
+		}else {
+			this.hayGanador =  false;
+		}
+	}
+
+	/**
+	 * post: funcion que cambia el jugaador activo
+	 */
+	private void cambiarTurno() {
+		if(this.jugadorActivo.equals(this.jugadorRojo)) {
+			this.jugadorActivo = this.jugadorAmarillo;
+		}else {
+			this.jugadorActivo = this.jugadorRojo;
 		}
 	}
 }
