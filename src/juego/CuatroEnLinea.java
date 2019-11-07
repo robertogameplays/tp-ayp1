@@ -13,11 +13,14 @@ import javafx.scene.control.Alert;
 public class CuatroEnLinea {
 
     private int filas, columnas;
-    private String jugadorRojo, jugadorAmarillo, jugadorActivo;
+    private String jugadorRojo, jugadorAmarillo, jugadorActivo, jugarGanador;
     private Casillero[][] casilleros;
     private Casillero colorActivo;
     private boolean hayGanador;
     private int contadorVacios;
+
+    static final int minNumeroPermitido = 4;
+	static final int maxNumeroPermitido = 10;
 
 	/**
 	 * pre : 'filas' y 'columnas' son mayores o iguales a 4.
@@ -42,6 +45,7 @@ public class CuatroEnLinea {
             this.colorActivo = Casillero.ROJO;
             this.hayGanador = false;
             this.contadorVacios = filas * columnas;
+            this.jugarGanador = "";
         }else {
 			this.alertTablero("Los numeros deben ser mayor o igual a 4");
         }
@@ -81,21 +85,24 @@ public class CuatroEnLinea {
 	 * @param columna
 	 */
 	public void soltarFicha(int columna) {
-		if(1 <= columna && columna <= this.contarColumnas()) {
-			int i = this.filas - 1;
-			while (i >= 0) {
+		if(!this.termino() && 1 <= columna && columna <= this.contarColumnas()) {
+			boolean casillaDisponible = false;
+			for(int i = this.filas - 1; i >= 0; i--) {
 				if (this.casilleros[i][columna - 1] == Casillero.VACIO) {
 					this.colorActivo = this.checkJugadorActivo();
 					this.casilleros[i][columna - 1] = this.colorActivo;
 					this.ganadorLineaHorizontal(i, columna - 1);
 					this.contadorVacios--;
+					this.cambiarTurno();
+					casillaDisponible = true;
 					break;
 				}
-				i--;
 			}
-			this.cambiarTurno();
+			if(!casillaDisponible) {
+				this.alertTablero("No hay mas casilleros libres en esta columna");
+			}
 		}else {
-			this.alertTablero("El parametro culumna debe encontrarse en el rango [1, " + this.contarColumnas() +"]");
+			System.exit(0);
 		}
 	}
 	
@@ -111,7 +118,12 @@ public class CuatroEnLinea {
 	 * post: indica si el juego termin� y tiene un ganador.
 	 */
 	public boolean hayGanador() {
-		return this.hayGanador;
+		if(this.hayGanador) {
+			this.jugarGanador = this.jugadorActivo;
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	/**
@@ -119,7 +131,7 @@ public class CuatroEnLinea {
 	 * post: devuelve el nombre del jugador que gan� el juego.
 	 */
 	public String obtenerGanador() {
-		return this.jugadorActivo;
+		return this.jugarGanador;
 	}
 
     /**
@@ -128,7 +140,7 @@ public class CuatroEnLinea {
      * @return
      */
 	private boolean validarNumeros(int numero) {
-	    if((numero >= 4) && (numero<=10)){
+	    if((numero >= minNumeroPermitido) && (numero<=maxNumeroPermitido)){
 	        return true;
         }else {
 	        return false;
@@ -165,7 +177,7 @@ public class CuatroEnLinea {
 	 * @param filaActual
 	 * @param columnaActual
 	 */
-	public void ganadorLineaHorizontal(int filaActual, int columnaActual) {
+	private void ganadorLineaHorizontal(int filaActual, int columnaActual) {
 		int countColor = 0;
 
 		for(int i = columnaActual; i < this.columnas; i++) {
