@@ -199,8 +199,38 @@ public class CuatroEnLinea {
 		}else {
 			this.hayGanador =  false;
 		}
+		
 	}
+	
+	private void ganadorLineaVertical(int filaActual, int columnaActual) {
+		int countColor = 0;
 
+		for(int i = filaActual; i < this.filas; i++) {
+			if(this.casilleros[i][columnaActual].equals(this.colorActivo)) {
+				countColor++;
+			}else{
+				break;
+			}
+		}
+		if(countColor >= 4) {
+			this.hayGanador = true;
+		}else {
+			for(int i = 0; i < filaActual; i++) {
+				if(this.casilleros[i][columnaActual].equals(this.colorActivo)) {
+					countColor++;
+				}
+				else{
+					break;
+				}
+			}
+		}
+		if(countColor >= 4) {
+			this.hayGanador =  true;
+		}else {
+			this.hayGanador =  false;
+		}
+	}
+	
 	/**
 	 * post: funcion que cambia el jugaador activo
 	 */
