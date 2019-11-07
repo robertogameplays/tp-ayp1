@@ -14,7 +14,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * Representación gráfica del Tablero del Juego Cuatro en Lí­nea.
+ * RepresentaciÃ³n grÃ¡fica del Tablero del Juego Cuatro en LÃ­Â­nea.
  * 
  */
 public class Tablero {
@@ -27,6 +27,7 @@ public class Tablero {
 	private CuatroEnLinea juego;
 	private GridPane grilla;
 	private Stage escenario;
+	private Button botonSoltarFicha[];
 
 	/**
 	 * post: asocia el Tablero a 'nuevoJuego' y lo inicializa a partir de su estado. 
@@ -38,6 +39,7 @@ public class Tablero {
 		juego = nuevoJuego;
 		escenario = new Stage();
 		grilla = new GridPane();
+		botonSoltarFicha= new Button[10];
 	}
 	
 	/**
@@ -67,13 +69,14 @@ public class Tablero {
 	private void dibujarBotones() {
 		
 		for (int columna = 1; columna <= juego.contarColumnas(); columna++) {
+			
+			
+			botonSoltarFicha[columna] = new Button("soltar");
+			botonSoltarFicha[columna].setMinHeight(ALTURA_BOTON);
 
-			Button botonSoltarFicha = new Button("soltar");
-			botonSoltarFicha.setMinHeight(ALTURA_BOTON);
-
-			botonSoltarFicha.setOnAction(new SoltarFicha(this, juego, columna));
-			botonSoltarFicha.setMinWidth(ANCHO_COLUMNA);
-			grilla.add(botonSoltarFicha, columna - 1, 0);
+			botonSoltarFicha[columna].setOnAction(new SoltarFicha(this, juego, columna));
+			botonSoltarFicha[columna].setMinWidth(ANCHO_COLUMNA);
+			grilla.add(botonSoltarFicha[columna], columna - 1, 0);
 		}
 	}
 	
@@ -91,6 +94,10 @@ public class Tablero {
 				Circle dibujoCasillero = dibujarCasillero(casillero);
 				
 				grilla.add(dibujoCasillero, columna - 1, fila);
+				
+				if(juego.obtenerCasillero(1, columna) != Casillero.VACIO){
+					botonSoltarFicha[columna].setDisable(true);
+				}
 			}
 		}
 	}
@@ -99,7 +106,7 @@ public class Tablero {
 	 * post: dibuja y devuelve el casillero dado.
 	 * 
 	 * @param casillero
-	 * @return representación gráfica del Casillero.
+	 * @return representaciÃ³n grÃ¡fica del Casillero.
 	 */
 	private Circle dibujarCasillero(Casillero casillero) {
 		
@@ -139,7 +146,7 @@ public class Tablero {
 	}
 
 	/**
-	 * pre : el juego asociado terminó.
+	 * pre : el juego asociado terminÃ³.
 	 * post: muestra un mensaje indicando el resultado del juego.
 	 */
 	public void mostrarResultado() {
@@ -153,7 +160,7 @@ public class Tablero {
 		
 		if (juego.hayGanador()) {
 		
-			textoResultado = new Text("Ganó el jugador " + juego.obtenerGanador());
+			textoResultado = new Text("GanÃ³ el jugador " + juego.obtenerGanador());
 			
 		} else {
 			
@@ -171,5 +178,6 @@ public class Tablero {
 		dialogo.setResizable(false);
 		
 		dialogo.showAndWait();
+		System.exit(1);
 	}
 }
