@@ -92,6 +92,7 @@ public class CuatroEnLinea {
 					this.colorActivo = this.checkJugadorActivo();
 					this.casilleros[i][columna - 1] = this.colorActivo;
 					this.ganadorLineaHorizontal(i, columna - 1);
+					this.ganadorLineaVertical(i, i);
 					this.contadorVacios--;
 					this.cambiarTurno();
 					casillaDisponible = true;
@@ -201,7 +202,12 @@ public class CuatroEnLinea {
 		}
 		
 	}
-	
+
+	/**
+	 * post: funcion que retorna si gano un jugador por columna
+	 * @param filaActual
+	 * @param columnaActual
+	 */
 	private void ganadorLineaVertical(int filaActual, int columnaActual) {
 		int countColor = 0;
 
