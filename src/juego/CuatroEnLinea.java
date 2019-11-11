@@ -38,6 +38,10 @@ public class CuatroEnLinea {
 	 * @param jugadorAmarillo : nombre del jugador con fichas amarillas.
 	 */
 	public CuatroEnLinea(int filas, int columnas, String jugadorRojo, String jugadorAmarillo) {
+		if(jugadorRojo.equalsIgnoreCase(jugadorAmarillo)) {
+			this.alertTablero("Los nombres deben ser distintos");
+			return;
+		}
         if(this.validarNumeros(filas) && this.validarNumeros(columnas)) {
 			this.crearTablero(filas, columnas);
             this.filas = filas;
@@ -52,7 +56,7 @@ public class CuatroEnLinea {
             this.objCasilleros = new Casilleros();
             this.casillaDisponible = true;
         }else {
-			this.alertTablero("Los numeros deben ser mayor o igual a 4");
+			this.alertTablero("Los numeros deben ser mayor o igual a 4, y menor a 10");
         }
 	}
 
@@ -208,7 +212,7 @@ public class CuatroEnLinea {
 		if(countColor >= totalFichasParaGanar) {
 			this.hayGanador = true;
 		}else {
-			countColor += this.objCasilleros.contarColoresVertical(this.casilleros, filaActual, columnaActual, 0, this.colorActivo, false);
+			countColor += this.objCasilleros.contarColoresVertical(this.casilleros, filaActual-1, columnaActual, 0, this.colorActivo, false);
 			if(countColor >= totalFichasParaGanar) {
 				this.hayGanador =  true;
 			}else {

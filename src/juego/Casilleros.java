@@ -41,7 +41,7 @@ public class Casilleros {
                 }
             }
         }else {
-            for (int i = columnaActual; i >= columnaFinal; i--) {
+            for (int i = columnaActual; i > columnaFinal; i--) {
                 if (casilleros[filaActual][i].equals(colorActivo)) {
                     countColor++;
                 } else {
@@ -72,7 +72,7 @@ public class Casilleros {
                 }
             }
         }else {
-            for (int i = filaActual; i >= filaFinal; i--) {
+            for (int i = filaActual; i > filaFinal; i--) {
                 if (casilleros[i][columnaActual].equals(colorActivo)) {
                     countColor++;
                 } else {
