@@ -227,11 +227,11 @@ public class CuatroEnLinea {
 	 * @param columnaActual
 	 */
 	private void ganadorLineaDiagonal(int filaActual, int columnaActual) {
-		int countColor = this.objCasilleros.contarColoresDiagonal(this.casilleros, filaActual, columnaActual, this.filas, this.columnas, this.colorActivo, true);
+		int countColor = this.objCasilleros.contarColoresDiagonal(this.casilleros, filaActual, columnaActual, this.filas-1, this.columnas, this.colorActivo, true);
 		if(countColor >= totalFichasParaGanar) {
 			this.hayGanador =  true;
 		}else {
-			countColor += this.objCasilleros.contarColoresDiagonal(this.casilleros, filaActual, columnaActual, filaActual, 0, this.colorActivo, false);
+			countColor += this.objCasilleros.contarColoresDiagonal(this.casilleros, filaActual, columnaActual, this.filas-1, 0, this.colorActivo, false);
 			if(countColor >= totalFichasParaGanar) {
 				this.hayGanador =  true;
 			}else {

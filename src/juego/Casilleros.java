@@ -20,7 +20,7 @@ public class Casilleros {
                 columnaIdice++;
             }
         }else {
-            while (filaIdice < filaFinal && columnaIdice < columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
+            while (filaIdice < filaFinal && columnaIdice > columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
                 countColor++;
                 filaIdice++;
                 columnaIdice--;
