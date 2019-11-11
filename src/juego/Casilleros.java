@@ -72,7 +72,7 @@ public class Casilleros {
     public int contarColoresVertical(Casillero[][] casilleros, int filaActual, int columnaActual, int filaFinal, Casillero colorActivo, boolean incrementa) {
         int countColor = 0;
         if(incrementa) {
-            for (int i = filaActual; i < filaFinal; i++) {
+            for (int i = filaActual; i <= filaFinal; i++) {
                 if (casilleros[i][columnaActual].equals(colorActivo)) {
                     countColor++;
                 } else {
