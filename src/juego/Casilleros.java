@@ -30,13 +30,23 @@ public class Casilleros {
      * @param colorActivo
      * @return
      */
-    public int contarColoresHorizontal(Casillero[][] casilleros, int filaActual, int columnaActual, int columnaFinal, Casillero colorActivo) {
+    public int contarColoresHorizontal(Casillero[][] casilleros, int filaActual, int columnaActual, int columnaFinal, Casillero colorActivo, boolean incrementa) {
         int countColor = 0;
-        for(int i = columnaActual; i < columnaFinal; i++) {
-            if(casilleros[filaActual][i].equals(colorActivo)) {
-                countColor++;
-            }else {
-                break;
+        if(incrementa) {
+            for (int i = columnaActual; i < columnaFinal; i++) {
+                if (casilleros[filaActual][i].equals(colorActivo)) {
+                    countColor++;
+                } else {
+                    break;
+                }
+            }
+        }else {
+            for (int i = columnaActual; i >= columnaFinal; i--) {
+                if (casilleros[filaActual][i].equals(colorActivo)) {
+                    countColor++;
+                } else {
+                    break;
+                }
             }
         }
         return countColor;
@@ -51,13 +61,23 @@ public class Casilleros {
      * @param colorActivo
      * @return
      */
-    public int contarColoresVertical(Casillero[][] casilleros, int filaActual, int columnaActual, int filaFinal, Casillero colorActivo) {
+    public int contarColoresVertical(Casillero[][] casilleros, int filaActual, int columnaActual, int filaFinal, Casillero colorActivo, boolean incrementa) {
         int countColor = 0;
-        for(int i = filaActual; i < filaFinal; i++) {
-            if(casilleros[i][columnaActual].equals(colorActivo)) {
-                countColor++;
-            }else{
-                break;
+        if(incrementa) {
+            for (int i = filaActual; i < filaFinal; i++) {
+                if (casilleros[i][columnaActual].equals(colorActivo)) {
+                    countColor++;
+                } else {
+                    break;
+                }
+            }
+        }else {
+            for (int i = filaActual; i >= filaFinal; i--) {
+                if (casilleros[i][columnaActual].equals(colorActivo)) {
+                    countColor++;
+                } else {
+                    break;
+                }
             }
         }
         return countColor;

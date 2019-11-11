@@ -184,11 +184,11 @@ public class CuatroEnLinea {
 	 * @param columnaActual
 	 */
 	private void ganadorLineaHorizontal(int filaActual, int columnaActual) {
-		int countColor = this.objCasilleros.contarColoresHorizontal(this.casilleros, filaActual, columnaActual, this.columnas, this.colorActivo);
+		int countColor = this.objCasilleros.contarColoresHorizontal(this.casilleros, filaActual, columnaActual, this.columnas - 1, this.colorActivo, true);
 		if(countColor >= totalFichasParaGanar) {
 			this.hayGanador = true;
 		}else {
-			countColor += this.objCasilleros.contarColoresHorizontal(this.casilleros, filaActual, 0, columnaActual, this.colorActivo);
+			countColor += this.objCasilleros.contarColoresHorizontal(this.casilleros, filaActual, columnaActual, 0, this.colorActivo, false);
 			if (countColor >= totalFichasParaGanar) {
 				this.hayGanador = true;
 			} else {
@@ -204,11 +204,11 @@ public class CuatroEnLinea {
 	 * @param columnaActual
 	 */
 	private void ganadorLineaVertical(int filaActual, int columnaActual) {
-		int countColor = this.objCasilleros.contarColoresVertical(this.casilleros, filaActual, columnaActual, this.filas, this.colorActivo);
+		int countColor = this.objCasilleros.contarColoresVertical(this.casilleros, filaActual, columnaActual, this.filas-1, this.colorActivo, true);
 		if(countColor >= totalFichasParaGanar) {
 			this.hayGanador = true;
 		}else {
-			countColor += this.objCasilleros.contarColoresVertical(this.casilleros, 0, columnaActual, filaActual, this.colorActivo);
+			countColor += this.objCasilleros.contarColoresVertical(this.casilleros, filaActual, columnaActual, 0, this.colorActivo, false);
 			if(countColor >= totalFichasParaGanar) {
 				this.hayGanador =  true;
 			}else {
