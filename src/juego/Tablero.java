@@ -27,6 +27,7 @@ public class Tablero {
 	private CuatroEnLinea juego;
 	private GridPane grilla;
 	private Stage escenario;
+	private Button botonSoltarFicha[];
 
 	/**
 	 * post: asocia el Tablero a 'nuevoJuego' y lo inicializa a partir de su estado. 
@@ -38,6 +39,7 @@ public class Tablero {
 		juego = nuevoJuego;
 		escenario = new Stage();
 		grilla = new GridPane();
+		botonSoltarFicha= new Button[10];
 	}
 	
 	/**
@@ -67,13 +69,11 @@ public class Tablero {
 	private void dibujarBotones() {
 		
 		for (int columna = 1; columna <= juego.contarColumnas(); columna++) {
-
-			Button botonSoltarFicha = new Button("soltar");
-			botonSoltarFicha.setMinHeight(ALTURA_BOTON);
-
-			botonSoltarFicha.setOnAction(new SoltarFicha(this, juego, columna));
-			botonSoltarFicha.setMinWidth(ANCHO_COLUMNA);
-			grilla.add(botonSoltarFicha, columna - 1, 0);
+			botonSoltarFicha[columna] = new Button("soltar");
+			botonSoltarFicha[columna].setMinHeight(ALTURA_BOTON);
+			botonSoltarFicha[columna].setOnAction(new SoltarFicha(this, juego, columna));
+			botonSoltarFicha[columna].setMinWidth(ANCHO_COLUMNA);
+			grilla.add(botonSoltarFicha[columna], columna - 1, 0);
 		}
 	}
 	
@@ -91,6 +91,10 @@ public class Tablero {
 				Circle dibujoCasillero = dibujarCasillero(casillero);
 				
 				grilla.add(dibujoCasillero, columna - 1, fila);
+
+				if(juego.obtenerCasillero(1, columna) != Casillero.VACIO){
+					botonSoltarFicha[columna].setDisable(true);
+				}
 			}
 		}
 	}

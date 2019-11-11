@@ -14,7 +14,7 @@ public class Casilleros {
     public int contarColoresDiagonal(Casillero[][] casilleros, int filaInicial, int columnaInicial, int filaFinal, int columnaFinal, Casillero colorActivo, boolean incrementa) {
         int filaIdice = filaInicial, columnaIdice = columnaInicial, countColor = 0;
         if(incrementa) {
-            while (filaIdice < filaFinal && columnaIdice < columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
+            while (filaIdice <= filaFinal && columnaIdice < columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
                 countColor++;
                 filaIdice++;
                 columnaIdice++;
