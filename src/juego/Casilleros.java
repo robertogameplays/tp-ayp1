@@ -11,12 +11,20 @@ public class Casilleros {
      * @param colorActivo
      * @return
      */
-    public int contarColoresDiagonal(Casillero[][] casilleros, int filaInicial, int columnaInicial, int filaFinal, int columnaFinal, Casillero colorActivo) {
+    public int contarColoresDiagonal(Casillero[][] casilleros, int filaInicial, int columnaInicial, int filaFinal, int columnaFinal, Casillero colorActivo, boolean incrementa) {
         int filaIdice = filaInicial, columnaIdice = columnaInicial, countColor = 0;
-        while(filaIdice < filaFinal && columnaIdice < columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
-            countColor++;
-            filaIdice++;
-            columnaIdice++;
+        if(incrementa) {
+            while (filaIdice < filaFinal && columnaIdice < columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
+                countColor++;
+                filaIdice++;
+                columnaIdice++;
+            }
+        }else {
+            while (filaIdice < filaFinal && columnaIdice < columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
+                countColor++;
+                filaIdice++;
+                columnaIdice--;
+            }
         }
         return countColor;
     }
@@ -41,7 +49,7 @@ public class Casilleros {
                 }
             }
         }else {
-            for (int i = columnaActual; i > columnaFinal; i--) {
+            for (int i = columnaActual; i >= columnaFinal; i--) {
                 if (casilleros[filaActual][i].equals(colorActivo)) {
                     countColor++;
                 } else {
