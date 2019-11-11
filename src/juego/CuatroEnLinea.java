@@ -18,9 +18,12 @@ public class CuatroEnLinea {
     private Casillero colorActivo;
     private boolean hayGanador;
     private int contadorVacios;
+    private Casilleros objCasilleros;
+    private boolean casillaDisponible;
 
     static final int minNumeroPermitido = 4;
 	static final int maxNumeroPermitido = 10;
+	static final int totalFichasParaGanar = 4;
 
 	/**
 	 * pre : 'filas' y 'columnas' son mayores o iguales a 4.
@@ -46,6 +49,8 @@ public class CuatroEnLinea {
             this.hayGanador = false;
             this.contadorVacios = filas * columnas;
             this.jugarGanador = "";
+            this.objCasilleros = new Casilleros();
+            this.casillaDisponible = true;
         }else {
 			this.alertTablero("Los numeros deben ser mayor o igual a 4");
         }
@@ -86,21 +91,21 @@ public class CuatroEnLinea {
 	 */
 	public void soltarFicha(int columna) {
 		if(!this.termino() && 1 <= columna && columna <= this.contarColumnas()) {
-			boolean casillaDisponible = false;
 			for(int i = this.filas - 1; i >= 0; i--) {
 				if (this.casilleros[i][columna - 1] == Casillero.VACIO) {
 					this.colorActivo = this.checkJugadorActivo();
 					this.casilleros[i][columna - 1] = this.colorActivo;
-					this.ganadorLineaHorizontal(i, columna - 1);
-					this.ganadorLineaVertical(i, i);
-					this.contadorVacios--;
-					this.cambiarTurno();
-					casillaDisponible = true;
+
+					if(!this.hayGanador()) this.ganadorLineaHorizontal(i, columna - 1);
+					if(!this.hayGanador()) this.ganadorLineaVertical(i, columna - 1);
+					if(!this.hayGanador()) this.ganadorLineaDiagonal(i, columna - 1);
+
+					if(!this.hayGanador()) {
+						this.contadorVacios--;
+						this.cambiarTurno();
+					}
 					break;
 				}
-			}
-			if(!casillaDisponible) {
-				this.alertTablero("No hay mas casilleros libres en esta columna");
 			}
 		}else {
 			System.exit(0);
@@ -179,28 +184,18 @@ public class CuatroEnLinea {
 	 * @param columnaActual
 	 */
 	private void ganadorLineaHorizontal(int filaActual, int columnaActual) {
-		int countColor = 0;
-
-		for(int i = columnaActual; i < this.columnas; i++) {
-			if(this.casilleros[filaActual][i].equals(this.colorActivo)) {
-				countColor++;
-			}
-		}
-		if(countColor >= 4) {
+		int countColor = this.objCasilleros.contarColoresHorizontal(this.casilleros, filaActual, columnaActual, this.columnas, this.colorActivo);
+		if(countColor >= totalFichasParaGanar) {
 			this.hayGanador = true;
 		}else {
-			for(int i = 0; i < columnaActual; i++) {
-				if(this.casilleros[filaActual][i].equals(this.colorActivo)) {
-					countColor++;
-				}
+			countColor += this.objCasilleros.contarColoresHorizontal(this.casilleros, filaActual, 0, columnaActual, this.colorActivo);
+			if (countColor >= totalFichasParaGanar) {
+				this.hayGanador = true;
+			} else {
+				this.hayGanador = false;
 			}
 		}
-		if(countColor >= 4) {
-			this.hayGanador =  true;
-		}else {
-			this.hayGanador =  false;
-		}
-		
+
 	}
 
 	/**
@@ -209,34 +204,38 @@ public class CuatroEnLinea {
 	 * @param columnaActual
 	 */
 	private void ganadorLineaVertical(int filaActual, int columnaActual) {
-		int countColor = 0;
-
-		for(int i = filaActual; i < this.filas; i++) {
-			if(this.casilleros[i][columnaActual].equals(this.colorActivo)) {
-				countColor++;
-			}else{
-				break;
-			}
-		}
-		if(countColor >= 4) {
+		int countColor = this.objCasilleros.contarColoresVertical(this.casilleros, filaActual, columnaActual, this.filas, this.colorActivo);
+		if(countColor >= totalFichasParaGanar) {
 			this.hayGanador = true;
 		}else {
-			for(int i = 0; i < filaActual; i++) {
-				if(this.casilleros[i][columnaActual].equals(this.colorActivo)) {
-					countColor++;
-				}
-				else{
-					break;
-				}
+			countColor += this.objCasilleros.contarColoresVertical(this.casilleros, 0, columnaActual, filaActual, this.colorActivo);
+			if(countColor >= totalFichasParaGanar) {
+				this.hayGanador =  true;
+			}else {
+				this.hayGanador =  false;
 			}
 		}
-		if(countColor >= 4) {
+	}
+
+	/**
+	 * post funcion que retorna si gano un jugador por diagonal
+	 * @param filaActual
+	 * @param columnaActual
+	 */
+	private void ganadorLineaDiagonal(int filaActual, int columnaActual) {
+		int countColor = this.objCasilleros.contarColoresDiagonal(this.casilleros, filaActual, columnaActual, this.filas, this.columnas, this.colorActivo);
+		if(countColor >= totalFichasParaGanar) {
 			this.hayGanador =  true;
 		}else {
-			this.hayGanador =  false;
+			countColor += this.objCasilleros.contarColoresDiagonal(this.casilleros, 0, 0, filaActual, columnaActual, this.colorActivo);
+			if(countColor >= totalFichasParaGanar) {
+				this.hayGanador =  true;
+			}else {
+				this.hayGanador =  false;
+			}
 		}
 	}
-	
+
 	/**
 	 * post: funcion que cambia el jugaador activo
 	 */
