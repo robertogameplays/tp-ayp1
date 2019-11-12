@@ -19,7 +19,6 @@ public class CuatroEnLinea {
     private boolean hayGanador;
     private int contadorVacios;
     private Casilleros objCasilleros;
-    private boolean casillaDisponible;
 
     static final int minNumeroPermitido = 4;
 	static final int maxNumeroPermitido = 10;
@@ -54,7 +53,6 @@ public class CuatroEnLinea {
             this.contadorVacios = filas * columnas;
             this.jugarGanador = "";
             this.objCasilleros = new Casilleros();
-            this.casillaDisponible = true;
         }else {
 			this.alertTablero("Los numeros deben ser mayor o igual a 4, y menor a 10");
         }
@@ -231,7 +229,7 @@ public class CuatroEnLinea {
 		if(countColor >= totalFichasParaGanar) {
 			this.hayGanador =  true;
 		}else {
-			countColor += this.objCasilleros.contarColoresDiagonal(this.casilleros, filaActual, columnaActual, this.filas-1, 0, this.colorActivo, false);
+			countColor = this.objCasilleros.contarColoresDiagonal(this.casilleros, filaActual, columnaActual, this.filas-1, 0, this.colorActivo, false);
 			if(countColor >= totalFichasParaGanar) {
 				this.hayGanador =  true;
 			}else {
@@ -263,4 +261,3 @@ public class CuatroEnLinea {
 
 		alert.showAndWait();
 	}
-}
