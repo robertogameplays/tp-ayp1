@@ -17,6 +17,14 @@ public class Casilleros {
             countColor++;
             filaIdice++;
             columnaIdice++;
+        }if(countColor<=4){
+        	filaIdice = filaInicial-1;
+        	columnaIdice = columnaInicial-1;
+        	while (filaIdice >= 0 && columnaIdice >= 0 && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
+                countColor++;
+                filaIdice--;
+                columnaIdice--;
+            }
         }
         return countColor;
     }
@@ -32,10 +40,18 @@ public class Casilleros {
      */
     public int contarColoresDiagonalPositiva(Casillero[][] casilleros, int filaInicial, int columnaInicial, int filaFinal, int columnaFinal, Casillero colorActivo) {
         int filaIdice = filaInicial, columnaIdice = columnaInicial, countColor = 0;
-        while (filaIdice < filaFinal && columnaIdice > columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
+        while (filaIdice < filaFinal && columnaIdice >= 0 && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
             countColor++;
             filaIdice++;
             columnaIdice--;
+        }if(countColor<=4){
+        	filaIdice = filaInicial-1;
+        	columnaIdice = columnaInicial+1;
+        	while (filaIdice >= 0 && columnaIdice < columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
+                countColor++;
+                filaIdice--;
+                columnaIdice++;
+            }
         }
         return countColor;
     }
@@ -52,7 +68,7 @@ public class Casilleros {
     public int contarColoresHorizontal(Casillero[][] casilleros, int filaActual, int columnaActual, int columnaFinal, Casillero colorActivo, boolean incrementa) {
         int countColor = 0;
         if(incrementa) {
-            for (int i = columnaActual; i < columnaFinal; i++) {
+            for (int i = columnaActual; i <= columnaFinal; i++) {
                 if (casilleros[filaActual][i].equals(colorActivo)) {
                     countColor++;
                 } else {
@@ -102,3 +118,4 @@ public class Casilleros {
         return countColor;
     }
 }
+
