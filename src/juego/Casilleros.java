@@ -11,20 +11,31 @@ public class Casilleros {
      * @param colorActivo
      * @return
      */
-    public int contarColoresDiagonal(Casillero[][] casilleros, int filaInicial, int columnaInicial, int filaFinal, int columnaFinal, Casillero colorActivo, boolean incrementa) {
+    public int contarColoresDiagonalNegativa(Casillero[][] casilleros, int filaInicial, int columnaInicial, int filaFinal, int columnaFinal, Casillero colorActivo) {
         int filaIdice = filaInicial, columnaIdice = columnaInicial, countColor = 0;
-        if(incrementa) {
-            while (filaIdice <= filaFinal && columnaIdice < columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
-                countColor++;
-                filaIdice++;
-                columnaIdice++;
-            }
-        }else {
-            while (filaIdice < filaFinal && columnaIdice > columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
-                countColor++;
-                filaIdice++;
-                columnaIdice--;
-            }
+        while (filaIdice < filaFinal && columnaIdice < columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
+            countColor++;
+            filaIdice++;
+            columnaIdice++;
+        }
+        return countColor;
+    }
+    /**
+     * post: Funcion que devuelve la cantidad de coleres que hay en diagonal
+     * @param casilleros
+     * @param filaInicial
+     * @param columnaInicial
+     * @param filaFinal
+     * @param columnaFinal
+     * @param colorActivo
+     * @return
+     */
+    public int contarColoresDiagonalPositiva(Casillero[][] casilleros, int filaInicial, int columnaInicial, int filaFinal, int columnaFinal, Casillero colorActivo) {
+        int filaIdice = filaInicial, columnaIdice = columnaInicial, countColor = 0;
+        while (filaIdice < filaFinal && columnaIdice > columnaFinal && casilleros[filaIdice][columnaIdice].equals(colorActivo)) {
+            countColor++;
+            filaIdice++;
+            columnaIdice--;
         }
         return countColor;
     }
