@@ -3,7 +3,7 @@ package juego;
 import javafx.scene.control.Alert;
 
 /**
- * Juego Cuatro en L�nea
+ * Juego Cuatro en Lï¿½nea
  * 
  * Reglas:
  * 
@@ -12,7 +12,7 @@ import javafx.scene.control.Alert;
  */
 public class CuatroEnLinea {
 
-    private int filas, columnas;
+    private int filas=0, columnas=0;
     private String jugadorRojo, jugadorAmarillo, jugadorActivo, jugarGanador;
     private Casillero[][] casilleros;
     private Casillero colorActivo;
@@ -30,7 +30,7 @@ public class CuatroEnLinea {
 	 * post: empieza el juego entre el jugador que tiene fichas rojas, identificado como 
 	 * 		 'jugadorRojo' y el jugador que tiene fichas amarillas, identificado como
 	 * 		 'jugadorAmarillo'. 
-	 * 		 Todo el tablero est� vac�o.
+	 * 		 Todo el tablero estï¿½ vacï¿½o.
 	 * 
 	 * @param filas : cantidad de filas que tiene el tablero.
 	 * @param columnas : cantidad de columnas que tiene el tablero.
@@ -40,8 +40,7 @@ public class CuatroEnLinea {
 	public CuatroEnLinea(int filas, int columnas, String jugadorRojo, String jugadorAmarillo) {
 		if(jugadorRojo.equalsIgnoreCase(jugadorAmarillo)) {
 			this.alertTablero("Los nombres deben ser distintos");
-			return;
-		}
+		}else{
         if(this.validarNumeros(filas) && this.validarNumeros(columnas)) {
 			this.crearTablero(filas, columnas);
             this.filas = filas;
@@ -58,37 +57,42 @@ public class CuatroEnLinea {
         }else {
 			this.alertTablero("Los numeros deben ser mayor o igual a 4, y menor a 10");
         }
+		}
 	}
 
 	/**
-	 * post: devuelve la cantidad m�xima de fichas que se pueden apilar en el tablero.
+	 * post: devuelve la cantidad mï¿½xima de fichas que se pueden apilar en el tablero.
 	 */
 	public int contarFilas() {
 		return this.filas;
 	}
 
 	/**
-	 * post: devuelve la cantidad m�xima de fichas que se pueden alinear en el tablero.
+	 * post: devuelve la cantidad mï¿½xima de fichas que se pueden alinear en el tablero.
 	 */
 	public int contarColumnas() {
 		return this.columnas;
 	}
 
 	/**
-	 * pre : fila est� en el intervalo [1, contarFilas()],
-	 * 		 columnas est� en el intervalo [1, contarColumnas()].
-	 * post: indica qu� ocupa el casillero en la posici�n dada por fila y columna.
+	 * pre : fila estï¿½ en el intervalo [1, contarFilas()],
+	 * 		 columnas estï¿½ en el intervalo [1, contarColumnas()].
+	 * post: indica quï¿½ ocupa el casillero en la posiciï¿½n dada por fila y columna.
 	 * 
 	 * @param fila
 	 * @param columna
 	 */
 	public Casillero obtenerCasillero(int fila, int columna) {
-		return casilleros[fila-1][columna-1];
+		if(fila <= this.filas && fila > 0 && columna > 0 && columna <= this.contarColumnas()){
+			return casilleros[fila-1][columna-1];
+		}else{
+			throw new Error("fila y columna dentro del maximo y minimo");
+		}
 	}
 	
 	/**
-	 * pre : el juego no termin�, columna est� en el intervalo [1, contarColumnas()]
-	 * 		 y a�n queda un Casillero.VACIO en la columna indicada. 
+	 * pre : el juego no terminï¿½, columna estï¿½ en el intervalo [1, contarColumnas()]
+	 * 		 y aï¿½n queda un Casillero.VACIO en la columna indicada. 
 	 * post: deja caer una ficha en la columna indicada.
 	 * 
 	 * @param columna
@@ -112,20 +116,20 @@ public class CuatroEnLinea {
 				}
 			}
 		}else {
-			System.exit(0);
+			throw new Error ("Columna llena");
 		}
 	}
 	
 	/**
-	 * post: indica si el juego termin� porque uno de los jugadores
-	 * 		 gan� o no existen casilleros vac�os.
+	 * post: indica si el juego terminï¿½ porque uno de los jugadores
+	 * 		 ganï¿½ o no existen casilleros vacï¿½os.
 	 */
 	public boolean termino() {
 		return (this.hayGanador || this.contadorVacios == 0);
 	}
 
 	/**
-	 * post: indica si el juego termin� y tiene un ganador.
+	 * post: indica si el juego terminï¿½ y tiene un ganador.
 	 */
 	public boolean hayGanador() {
 		if(this.hayGanador) {
@@ -137,8 +141,8 @@ public class CuatroEnLinea {
 	}
 
 	/**
-	 * pre : el juego termin�.
-	 * post: devuelve el nombre del jugador que gan� el juego.
+	 * pre : el juego terminï¿½.
+	 * post: devuelve el nombre del jugador que ganï¿½ el juego.
 	 */
 	public String obtenerGanador() {
 		return this.jugarGanador;
@@ -227,11 +231,11 @@ public class CuatroEnLinea {
 	 * @param columnaActual
 	 */
 	private void ganadorLineaDiagonal(int filaActual, int columnaActual) {
-		int countColor = this.objCasilleros.contarColoresDiagonalNegativa(this.casilleros, filaActual, columnaActual, this.filas-1, this.columnas, this.colorActivo);
+		int countColor = this.objCasilleros.contarColoresDiagonalNegativa(this.casilleros, filaActual, columnaActual, this.filas, this.columnas, this.colorActivo);
 		if(countColor >= totalFichasParaGanar) {
 			this.hayGanador =  true;
 		}else {
-			countColor += this.objCasilleros.contarColoresDiagonalPositiva(this.casilleros, filaActual, columnaActual, this.filas-1, 0, this.colorActivo);
+			countColor = this.objCasilleros.contarColoresDiagonalPositiva(this.casilleros, filaActual, columnaActual, this.filas, this.columnas, this.colorActivo);
 			if(countColor >= totalFichasParaGanar) {
 				this.hayGanador =  true;
 			}else {
@@ -260,7 +264,8 @@ public class CuatroEnLinea {
 		alert.setTitle("Alerta del tablero");
 		alert.setHeaderText(null);
 		alert.setContentText(msg);
-
+		
 		alert.showAndWait();
+
 	}
 }
