@@ -83,7 +83,11 @@ public class CuatroEnLinea {
 	 * @param columna
 	 */
 	public Casillero obtenerCasillero(int fila, int columna) {
-		return casilleros[fila-1][columna-1];
+		if(fila>=1 && fila<= contarFilas() && columna>=1 && columna<= contarColumnas()){
+			return casilleros[fila-1][columna-1];
+		}else{
+			throw new Error("filas y columnas mayores a 0 y menor a la cantidad maxima");
+		}
 	}
 	
 	/**
@@ -112,7 +116,7 @@ public class CuatroEnLinea {
 				}
 			}
 		}else {
-			System.exit(0);
+			throw new Error("Soltar ficha = columna > 0");
 		}
 	}
 	
